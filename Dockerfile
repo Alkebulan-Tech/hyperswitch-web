@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Install dependencies with force option to handle potential conflicts
-RUN yarn install
+RUN npm install --force
 
 # Expose the required port
 EXPOSE 9050
@@ -20,4 +20,4 @@ ENV envBackendUrl=https://piglet-engaging-mako.ngrok-free.app
 ENV envLoggingUrl=http://localhost:8207
 
 # Command to run the build and start the application
-CMD ["bash", "-c", "yarn re:build && yarn start"]
+CMD ["bash", "-c", "npm run build:dev && npm start"]

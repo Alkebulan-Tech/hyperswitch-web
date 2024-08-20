@@ -21,7 +21,7 @@
     "webpack-merge": "^5.9.0"
   },
   "scripts": {
-    "build:dev": "sdkEnv=sandbox webpack --config webpack.dev.js",
+    "build:dev": "sdkEnv=local webpack --config webpack.dev.js",
     "build:dev-integ": "sdkEnv=integ webpack --config webpack.dev.js",
     "start": "sdkEnv=local webpack serve --config webpack.dev.js",
     "build:prod": "sdkEnv=prod webpack --config webpack.common.js",
