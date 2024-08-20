@@ -15,7 +15,7 @@ EXPOSE 9050
 
 # Set environment variables
 ENV sdkEnv=local
-ENV envSdkUrl=http://localhost:9050
+ENV envSdkUrl=https://kemetxhssdk-8xe9u6l3.b4a.run
 ENV envBackendUrl=https://piglet-engaging-mako.ngrok-free.app
 ENV envLoggingUrl=http://localhost:8207
 
