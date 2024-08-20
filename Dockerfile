@@ -20,4 +20,4 @@ ENV envBackendUrl=https://piglet-engaging-mako.ngrok-free.app
 ENV envLoggingUrl=http://localhost:8207
 
 # Command to run the build and start the application
-CMD ["bash", "-c", "npm run build:dev && npm start"]
+CMD ["bash", "-c", "npm run re:build && npm run build:dev && npm start"]
