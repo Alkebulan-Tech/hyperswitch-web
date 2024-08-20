@@ -27,9 +27,9 @@ const getSdkUrl = (env, customUrl) => {
   if (customUrl) return customUrl;
   const urls = {
     prod: "https://checkout.hyperswitch.io",
-    sandbox: "https://beta.hyperswitch.io",
+    sandbox: "https://piglet-engaging-mako.ngrok-free.app",
     integ: "https://dev.hyperswitch.io",
-    local: "http://localhost:9050",
+    local: "http://piglet-engaging-mako.ngrok-free.app",
   };
   return urls[env] || urls.local;
 };
@@ -130,18 +130,18 @@ module.exports = (publicPath = "auto") => {
       sdkEnv === "local"
         ? {}
         : {
-            sideEffects: true,
-            minimize: true,
-            minimizer: [
-              new TerserPlugin({
-                terserOptions: {
-                  compress: {
-                    drop_console: false,
-                  },
+          sideEffects: true,
+          minimize: true,
+          minimizer: [
+            new TerserPlugin({
+              terserOptions: {
+                compress: {
+                  drop_console: false,
                 },
-              }),
-            ],
-          },
+              },
+            }),
+          ],
+        },
     plugins,
     module: {
       rules: [

@@ -7,9 +7,9 @@ const sdkEnv = process.env.sdkEnv ?? "local";
 
 const endpointMap = {
   prod: "https://api.hyperswitch.io/payments",
-  sandbox: "https://sandbox.hyperswitch.io/payments",
+  sandbox: "https://piglet-engaging-mako.ngrok-free.app",
   integ: "https://integ.hyperswitch.io/api/payments",
-  local: "http://localhost:9050", // Default or local environment endpoint
+  local: "http://piglet-engaging-mako.ngrok-free.app", // Default or local environment endpoint
 };
 
 const backendEndPoint = endpointMap[sdkEnv] || endpointMap.local;
