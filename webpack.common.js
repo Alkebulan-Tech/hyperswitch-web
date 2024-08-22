@@ -29,7 +29,7 @@ const getSdkUrl = (env, customUrl) => {
     prod: "https://checkout.hyperswitch.io",
     sandbox: "https://piglet-engaging-mako.ngrok-free.app",
     integ: "https://dev.hyperswitch.io",
-    local: "http://piglet-engaging-mako.ngrok-free.app",
+    local: "https://piglet-engaging-mako.ngrok-free.app",
   };
   return urls[env] || urls.local;
 };
