@@ -9,7 +9,7 @@ const endpointMap = {
   prod: "https://piglet-engaging-mako.ngrok-free.app",
   sandbox: "https://piglet-engaging-mako.ngrok-free.app",
   integ: "https://piglet-engaging-mako.ngrok-free.app",
-  local: "http://piglet-engaging-mako.ngrok-free.app", // Default or local environment endpoint
+  local: "https://piglet-engaging-mako.ngrok-free.app", // Default or local environment endpoint
 };
 
 const backendEndPoint = endpointMap[sdkEnv] || endpointMap.local;
