@@ -22,8 +22,8 @@ jobs:
         run: npm run re:build && npm run build:dev
         env:
           SDK_ENV: local
-          HYPERSWITCH_PUBLISHABLE_KEY: pk_snd_b62350e9d1c84eb7976f957f2a595b94
-          HYPERSWITCH_SECRET_KEY: snd_OMJP22Jd9KSQuaxfy4Sd32VhRSydHZZNtE5SqJ9kvWEhp1Fz0KWk97RpPYsrNtpn
+          HYPERSWITCH_PUBLISHABLE_KEY: pk_snd_7f90423a1068420d85d539f33cb0a71a
+          HYPERSWITCH_SECRET_KEY: snd_IHRgLnwG5saL9hwj9Yen8Fg2gKr1uxtjD58Mgkt4DqrlOM7CK3uqBtVGPbDtd9SZ
           HYPERSWITCH_SERVER_URL: https://piglet-engaging-mako.ngrok-free.app
           HYPERSWITCH_CLIENT_URL: https://kemetx-sdk.web.app
           SELF_SERVER_URL: https://kemetx-sdk.web.app
