@@ -14,10 +14,12 @@
     "@sentry/react": "^7.64.0",
     "@sentry/webpack-plugin": "^2.7.0",
     "fast-glob": "^3.3.2",
+    "firebase": "^10.13.0",
     "react": "^18.2.0",
     "react-datepicker": "^6.9.0",
     "react-dom": "^18.2.0",
     "recoil": "^0.1.2",
+    "rescript-firebase": "^1.0.1",
     "webpack-merge": "^5.9.0"
   },
   "scripts": {
