@@ -479,7 +479,7 @@ let paymentMethodsFields = [
     miniIcon: None,
   },
   {
-    paymentMethodName: "multibanco",
+    paymentMethodName: "multibanco_transfer",
     icon: Some(icon("multibanco", ~size=19)),
     displayName: "Multibanco",
     fields: [Email, InfoElement],
@@ -496,6 +496,13 @@ let paymentMethodsFields = [
     paymentMethodName: "open_banking_uk",
     icon: Some(icon("bank", ~size=19)),
     displayName: "Pay by Bank",
+    fields: [InfoElement],
+    miniIcon: Some(icon("bank", ~size=19)),
+  },
+  {
+    paymentMethodName: "open_banking_pis",
+    icon: Some(icon("bank", ~size=19)),
+    displayName: "Open Banking",
     fields: [InfoElement],
     miniIcon: Some(icon("bank", ~size=19)),
   },
@@ -692,7 +699,6 @@ let getPaymentMethodFields = (
   requiredFields: array<required_fields>,
   ~isSavedCardFlow=false,
   ~isAllStoredCardsHaveName=false,
-  (),
 ) => {
   let isAnyBillingDetailEmpty = requiredFields->getIsAnyBillingDetailEmpty
   let requiredFieldsArr = requiredFields->Array.map(requiredField => {
@@ -739,9 +745,6 @@ let getPaymentDetails = (arr: array<string>) => {
   ->ignore
   finalArr
 }
-
-type paymentMethod =
-  Cards | Wallets | PayLater | BankRedirect | BankTransfer | BankDebit | Crypto | Voucher | NONE
 
 type cardType = Credit | Debit
 
@@ -802,6 +805,7 @@ type paymentMethodList = {
   mandate_payment: option<mandate>,
   payment_type: payment_type,
   merchant_name: string,
+  collect_billing_details_from_wallets: bool,
 }
 
 let defaultPaymentMethodType = {
@@ -823,19 +827,7 @@ let defaultList = {
   mandate_payment: None,
   payment_type: NONE,
   merchant_name: "",
-}
-let getMethod = str => {
-  switch str {
-  | "card" => Cards
-  | "wallet" => Wallets
-  | "pay_later" => PayLater
-  | "bank_redirect" => BankRedirect
-  | "bank_transfer" => BankTransfer
-  | "bank_debit" => BankDebit
-  | "crypto" => Crypto
-  | "voucher" => Voucher
-  | _ => NONE
-  }
+  collect_billing_details_from_wallets: true,
 }
 
 let getPaymentExperienceType = str => {
@@ -1030,6 +1022,11 @@ let itemToObjMapper = dict => {
     mandate_payment: getMandate(dict, "mandate_payment"),
     payment_type: getString(dict, "payment_type", "")->paymentTypeMapper,
     merchant_name: getString(dict, "merchant_name", ""),
+    collect_billing_details_from_wallets: getBool(
+      dict,
+      "collect_billing_details_from_wallets",
+      true,
+    ),
   }
 }
 
@@ -1050,11 +1047,7 @@ let buildFromPaymentList = (plist: paymentMethodList) => {
       )
       {
         paymentMethodName,
-        fields: getPaymentMethodFields(
-          paymentMethodName,
-          individualPaymentMethod.required_fields,
-          (),
-        ),
+        fields: getPaymentMethodFields(paymentMethodName, individualPaymentMethod.required_fields),
         paymentFlow: paymentExperience,
         handleUserError,
         methodType,

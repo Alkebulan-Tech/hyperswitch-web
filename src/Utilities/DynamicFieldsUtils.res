@@ -42,12 +42,12 @@ let isBillingAddressFieldType = (fieldType: PaymentMethodsRecord.paymentMethodsF
 
 let getBillingAddressPathFromFieldType = (fieldType: PaymentMethodsRecord.paymentMethodsFields) => {
   switch fieldType {
-  | AddressLine1 => "billing.address.line1"
-  | AddressLine2 => "billing.address.line2"
-  | AddressCity => "billing.address.city"
-  | AddressState => "billing.address.state"
-  | AddressCountry(_) => "billing.address.country"
-  | AddressPincode => "billing.address.zip"
+  | AddressLine1 => "payment_method_data.billing.address.line1"
+  | AddressLine2 => "payment_method_data.billing.address.line2"
+  | AddressCity => "payment_method_data.billing.address.city"
+  | AddressState => "payment_method_data.billing.address.state"
+  | AddressCountry(_) => "payment_method_data.billing.address.country"
+  | AddressPincode => "payment_method_data.billing.address.zip"
   | _ => ""
   }
 }
@@ -552,11 +552,11 @@ let useRequiredFieldsBody = (
         if item === BillingName {
           let arr = value->String.split(" ")
           acc->Dict.set(
-            "billing.address.first_name",
+            "payment_method_data.billing.address.first_name",
             arr->Array.get(0)->Option.getOr("")->JSON.Encode.string,
           )
           acc->Dict.set(
-            "billing.address.last_name",
+            "payment_method_data.billing.address.last_name",
             arr->Array.get(1)->Option.getOr("")->JSON.Encode.string,
           )
         } else {
@@ -580,20 +580,22 @@ let useRequiredFieldsBody = (
         | FullName => getName(item, fullName)
         | _ => item.field_type->getFieldValueFromFieldType
         }
-        if (
-          isSavedCardFlow &&
-          (item.field_type === BillingName || item.field_type === FullName) &&
-          item.display_name === "card_holder_name" &&
-          item.required_field === "payment_method_data.card.card_holder_name"
-        ) {
-          if !isAllStoredCardsHaveName {
-            acc->Dict.set(
-              "payment_method_data.card_token.card_holder_name",
-              value->JSON.Encode.string,
-            )
+        if value != "" {
+          if (
+            isSavedCardFlow &&
+            (item.field_type === BillingName || item.field_type === FullName) &&
+            item.display_name === "card_holder_name" &&
+            item.required_field === "payment_method_data.card.card_holder_name"
+          ) {
+            if !isAllStoredCardsHaveName {
+              acc->Dict.set(
+                "payment_method_data.card_token.card_holder_name",
+                value->JSON.Encode.string,
+              )
+            }
+          } else {
+            acc->Dict.set(item.required_field, value->JSON.Encode.string)
           }
-        } else {
-          acc->Dict.set(item.required_field, value->JSON.Encode.string)
         }
         acc
       })
@@ -740,7 +742,6 @@ let combineCardExpiryAndCvc = arr => {
 let updateDynamicFields = (
   arr: array<PaymentMethodsRecord.paymentMethodsFields>,
   billingAddress,
-  (),
 ) => {
   arr
   ->Utils.removeDuplicate
@@ -768,7 +769,7 @@ let useSubmitCallback = () => {
   let {localeString} = Recoil.useRecoilValueFromAtom(configAtom)
 
   React.useCallback((ev: Window.event) => {
-    let json = ev.data->JSON.parseExn
+    let json = ev.data->Utils.safeParse
     let confirm = json->Utils.getDictFromJson->ConfirmType.itemToObjMapper
     if confirm.doSubmit {
       if line1.value == "" {
@@ -820,22 +821,6 @@ let usePaymentMethodTypeFromList = (
       ),
     )->Option.getOr(PaymentMethodsRecord.defaultPaymentMethodType)
   }, (paymentMethodListValue, paymentMethod, paymentMethodType))
-}
-
-let useAreAllRequiredFieldsPrefilled = (
-  ~paymentMethodListValue,
-  ~paymentMethod,
-  ~paymentMethodType,
-) => {
-  let paymentMethodTypes = usePaymentMethodTypeFromList(
-    ~paymentMethodListValue,
-    ~paymentMethod,
-    ~paymentMethodType,
-  )
-
-  paymentMethodTypes.required_fields->Array.reduce(true, (acc, requiredField) => {
-    acc && requiredField.value != ""
-  })
 }
 
 let removeRequiredFieldsDuplicates = (

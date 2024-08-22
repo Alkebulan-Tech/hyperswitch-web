@@ -11,12 +11,11 @@ let useIsGuestCustomer = () => {
 }
 
 let useHandlePostMessages = (~complete, ~empty, ~paymentType, ~savedMethod=false) => {
-  let loggerState = Recoil.useRecoilValueFromAtom(RecoilAtoms.loggerAtom)
-  let setIsPayNowButtonDisable = RecoilAtoms.payNowButtonDisable->Recoil.useSetRecoilState
+  open RecoilAtoms
+
+  let loggerState = Recoil.useRecoilValueFromAtom(loggerAtom)
 
   React.useEffect(() => {
-    let isCompletelyFilled = complete && paymentType !== ""
-    setIsPayNowButtonDisable(_ => !isCompletelyFilled)
     Utils.handlePostMessageEvents(~complete, ~empty, ~paymentType, ~loggerState, ~savedMethod)
     None
   }, (complete, empty, paymentType))

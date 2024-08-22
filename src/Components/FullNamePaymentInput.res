@@ -36,7 +36,7 @@ let make = (~paymentType, ~customFieldName=None, ~optionalRequiredFields=None) =
   let nameRef = React.useRef(Nullable.null)
 
   let submitCallback = React.useCallback((ev: Window.event) => {
-    let json = ev.data->JSON.parseExn
+    let json = ev.data->safeParse
     let confirm = json->getDictFromJson->ConfirmType.itemToObjMapper
     if confirm.doSubmit {
       if fullName.value == "" {
@@ -69,9 +69,9 @@ let make = (~paymentType, ~customFieldName=None, ~optionalRequiredFields=None) =
       paymentType
       onBlur
       type_="text"
-      name="name"
       inputRef=nameRef
       placeholder
+      name=TestUtils.fullNameInputTestId
     />
   </RenderIf>
 }

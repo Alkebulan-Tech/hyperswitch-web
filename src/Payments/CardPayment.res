@@ -129,7 +129,7 @@ let make = (
   )
 
   let submitCallback = React.useCallback((ev: Window.event) => {
-    let json = ev.data->JSON.parseExn
+    let json = ev.data->safeParse
     let confirm = json->getDictFromJson->ConfirmType.itemToObjMapper
     let (month, year) = CardUtils.getExpiryDates(cardExpiry)
 
@@ -149,7 +149,6 @@ let make = (
       ~cvcNumber,
       ~cardBrand=cardNetwork,
       ~nickname,
-      (),
     )
     let banContactBody = PaymentBody.bancontactBody()
     let cardBody = if isCustomerAcceptanceRequired {
@@ -176,7 +175,6 @@ let make = (
           ~confirmParam=confirm.confirmParams,
           ~handleUserError=false,
           ~manualRetry=isManualRetryEnabled,
-          (),
         )
       } else {
         if cardNumber === "" {
@@ -259,6 +257,7 @@ let make = (
               className={innerLayout === Compressed && cardError->String.length > 0
                 ? "border-b-0"
                 : ""}
+              name=TestUtils.cardNoInputTestId
             />
             <div
               className="flex flex-row w-full place-content-between"
@@ -280,6 +279,7 @@ let make = (
                   maxLength=7
                   inputRef=expiryRef
                   placeholder=localeString.expiryPlaceholder
+                  name=TestUtils.expiryInputTestId
                 />
               </div>
               <div className={innerLayout === Spaced ? "w-[45%]" : "w-[50%]"}>
@@ -304,6 +304,7 @@ let make = (
                   maxLength=4
                   inputRef=cvcRef
                   placeholder="123"
+                  name=TestUtils.cardCVVInputTestId
                 />
               </div>
             </div>

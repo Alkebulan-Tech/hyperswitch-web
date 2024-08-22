@@ -35,7 +35,7 @@ let make = (
     | Some(fn) => fn(_ => None)
     | None => ()
     }
-    Utils.handleOnFocusPostMessage(~targetOrigin=parentURL, ())
+    Utils.handleOnFocusPostMessage(~targetOrigin=parentURL)
   }
 
   let handleBlur = ev => {
@@ -45,7 +45,7 @@ let make = (
     | Some(fn) => fn(ev)
     | None => ()
     }
-    Utils.handleOnBlurPostMessage(~targetOrigin=parentURL, ())
+    Utils.handleOnBlurPostMessage(~targetOrigin=parentURL)
   }
 
   let backgroundClass = switch paymentType {
@@ -102,6 +102,7 @@ let make = (
             width: fieldWidth,
             height,
           }
+          dataTestId={name}
           disabled=readOnly
           ref={inputRef->ReactDOM.Ref.domRef}
           type_

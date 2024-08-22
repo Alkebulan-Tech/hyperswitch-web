@@ -21,7 +21,7 @@ let make = () => {
   React.useEffect0(() => {
     handlePostMessage([("iframeMountedCallback", true->JSON.Encode.bool)])
     let handle = (ev: Window.event) => {
-      let json = ev.data->JSON.parseExn
+      let json = ev.data->safeParse
       let dict = json->Utils.getDictFromJson
       if dict->Dict.get("fullScreenIframeMounted")->Option.isSome {
         let metadata = dict->getJsonObjectFromDict("metadata")
@@ -91,7 +91,7 @@ let make = () => {
       ~switchToCustomPod,
     )
     ->then(json => {
-      let dict = json->JSON.Decode.object->Option.getOr(Dict.make())
+      let dict = json->getDictFromJson
       let status = dict->getString("status", "")
 
       if (

@@ -41,7 +41,7 @@ let make = (~paymentType) => {
   }, [email.isValid])
 
   let submitCallback = React.useCallback((ev: Window.event) => {
-    let json = ev.data->JSON.parseExn
+    let json = ev.data->safeParse
     let confirm = json->getDictFromJson->ConfirmType.itemToObjMapper
     if confirm.doSubmit {
       if email.value == "" {
@@ -63,9 +63,9 @@ let make = (~paymentType) => {
       onBlur
       paymentType
       type_="email"
-      name="email"
       inputRef=emailRef
       placeholder="Eg: johndoe@gmail.com"
+      name=TestUtils.emailInputTestId
     />
   </RenderIf>
 }

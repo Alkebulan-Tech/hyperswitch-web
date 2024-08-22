@@ -66,6 +66,7 @@ type recoilConfig = {
   config: configClass,
   themeObj: themeClass,
   localeString: LocaleStringTypes.localeStrings,
+  constantString: LocaleStringTypes.constantStrings,
   showLoader: bool,
 }
 
@@ -88,6 +89,7 @@ let getLocaleObject = async string => {
     | FR_BE => Js.import(FrenchBelgiumLocale.localeStrings)
     | ES => Js.import(SpanishLocale.localeStrings)
     | CA => Js.import(CatalanLocale.localeStrings)
+    | ZH => Js.import(ChineseLocale.localeStrings)
     | PT => Js.import(PortugueseLocale.localeStrings)
     | IT => Js.import(ItalianLocale.localeStrings)
     | PL => Js.import(PolishLocale.localeStrings)
@@ -103,10 +105,20 @@ let getLocaleObject = async string => {
   }
 }
 
+let getConstantStringsObject = async () => {
+  try {
+    let promiseConstantStrings = Js.import(ConstantStrings.constantStrings)
+    await promiseConstantStrings
+  } catch {
+  | _ => ConstantStrings.constantStrings
+  }
+}
+
 let defaultRecoilConfig: recoilConfig = {
   config: defaultConfig,
   themeObj: defaultConfig.appearance.variables,
   localeString: EnglishLocale.localeStrings,
+  constantString: ConstantStrings.constantStrings,
   showLoader: false,
 }
 

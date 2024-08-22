@@ -14,12 +14,13 @@ let make = () => {
   open RecoilAtoms
   open Utils
   let (showLoader, setShowLoader) = React.useState(() => false)
+  let (isPayNowButtonDisable, setIsPayNowButtonDisable) = React.useState(() => false)
   let {themeObj, localeString} = configAtom->Recoil.useRecoilValueFromAtom
   let {sdkHandleConfirmPayment} = optionAtom->Recoil.useRecoilValueFromAtom
-  let (isPayNowButtonDisable, setIsPayNowButtonDisable) = payNowButtonDisable->Recoil.useRecoilState
 
   let confirmPayload = sdkHandleConfirmPayment->PaymentBody.confirmPayloadForSDKButton
   let buttonText = sdkHandleConfirmPayment.buttonText->Option.getOr(localeString.payNowButton)
+
 
   let handleMessage = (event: Types.event) => {
     let json = event.data->Identity.anyTypeToJson->getStringFromJson("")->safeParse
