@@ -6,9 +6,9 @@ const common = require("./webpack.common.js");
 const sdkEnv = process.env.sdkEnv ?? "local";
 
 const endpointMap = {
-  prod: "https://api.hyperswitch.io/payments",
+  prod: "https://piglet-engaging-mako.ngrok-free.app",
   sandbox: "https://piglet-engaging-mako.ngrok-free.app",
-  integ: "https://integ.hyperswitch.io/api/payments",
+  integ: "https://piglet-engaging-mako.ngrok-free.app",
   local: "http://piglet-engaging-mako.ngrok-free.app", // Default or local environment endpoint
 };
 
